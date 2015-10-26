@@ -1,15 +1,16 @@
 // Coap client
 
-"use strict";
-
-
 (function(){
+    "use strict";
+    var clear = require('clear');
+    clear();
     var coapOjb = require("coap");
     var coapMsg = {
         method: 'put',
-        hostname: parsed_url.hostname,
+        //hostname: parsed_url.hostname,
         pathname: 'leds',
-        confirmable: true
+        confirmable: true,
+        a: 'aaa'
     };
     
     var request = coapOjb.request(coapMsg);
@@ -24,9 +25,11 @@
     buf.writeUInt8(parseInt(colour_r), 0);  
     buf.writeUInt8(parseInt(colour_g), 1);
     buf.writeUInt8(parseInt(colour_b), 2);
+    
     request.write(buf);
     request.on('response', function(res){
         console.log("Response code :: " + res.code)
+        console.log("Response :: " + res)
     });
     request.end();
     
