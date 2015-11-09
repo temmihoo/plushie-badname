@@ -41,11 +41,11 @@ module.exports.createServer = function(){
 },
 
 // Client request
-module.exports.createRequest = function(params){
+module.exports.createRequest = function(params, parse_rgb_urllike){
 	var coapOjb = require("coap");
 	var coapMsg = {
 		method: params.method,
-		//hostname: parsed_url.hostname,
+		hostname: "10.1.1.38",
 		//pathname: 'leds',
 		pathname: params.pathname,
 		confirmable: params.confirmable
@@ -53,7 +53,7 @@ module.exports.createRequest = function(params){
 	
 	var request = coapOjb.request(coapMsg);
 	var querystring = require('querystring');
-	var parsed = querystring.parse("r=0&g=0&b=0");
+	var parsed = querystring.parse(parse_rgb_urllike);
 	
 	var colour_r = parsed.r;
 	var colour_g = parsed.g;
