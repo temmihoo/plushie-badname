@@ -25,7 +25,7 @@ module.exports.createServer = function(){
 		running: false,
 		isRuning: function(){
 			return this.running;
-		},	
+		},
 		setRunning: function(status){
 			this.running = status;
 		},
@@ -49,12 +49,13 @@ module.exports.createRequest = function(params,value){
 		//pathname: 'leds',
 		pathname: params.pathname,
 		confirmable: params.confirmable,
+		hostname: params.hostname
 	};
-	var caopVal=value;
+	var coapVal=value;
 	
 	var request = coapOjb.request(coapMsg);
 	var querystring = require('querystring');
-	var parsed = querystring.parse(caopVal);
+	var parsed = querystring.parse(coapVal);
 	
 	var colour_r = parsed.r;
 	var colour_g = parsed.g;
@@ -70,7 +71,7 @@ module.exports.createRequest = function(params,value){
 		console.log("Response code :: " + res.code)
 		console.log("Response :: " + res)
 	});
-		
+
 	return {
 		send: function(){
 			request.end();
