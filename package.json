@@ -3,15 +3,18 @@
 , "version": "0.0.1"
 , "description": "Helsinki Hacklab workshop goes IoT"
 , "main": "server.js"
-, "scripts": {
+, "scripts":
+  {
     "test": "echo \"Error: no test specified\" && exit 1"
   , "start": "node server.js"
   }
-, "repository": {
+, "repository":
+  {
     "type": "git"
   , "url": "git+https://github.com/temmihoo/plushie-badname.git"
   }
-, "author": [
+, "author":
+  [
     {
       "name": "Teemu Hakala"
     , "email": "temmi@iki.fi"
@@ -21,7 +24,8 @@
     }
   ]
 , "license": "MIT"
-, "bugs": {
+, "bugs":
+  {
     "url": "https://github.com/temmihoo/plushie-badname/issues"
   }
 , "homepage": "https://github.com/temmihoo/plushie-badname#readme"
