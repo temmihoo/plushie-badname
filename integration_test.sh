@@ -1,52 +1,74 @@
 #!/bin/sh
 
-sleep_period=2
+if [ -z $1 ]
+then
+    sleep_period=0
+else
+    sleep_period=$1
+fi
+
+failures=0
+
+light_test () {
+    colour=$(printf "%03d %03d %03d\n" $1 $2 $3)
+    testname=$4
+    send_coap_colour ${colour} ${testname}
+    ask_user_success_status ${colour} ${testname}
+    sleep ${sleep_period}
+}
 
 send_coap_colour () {
-    echo $colour
-    echo $colour | node client.js
-    eval test_${testname}_exec=$?
+    echo ${colour}
+    echo ${colour} | node client.js
+    if [ $? -eq 0 ]
+    then
+        eval ${testname}_test_exec="OK"
+    else
+        eval ${testname}_test_exec=$?
+        failures=$((${failures} + 1))
+    fi
 }
 
 ask_user_success_status () {
     cat <<EOT
-    The light should be coloured at $1
+Test ${testname}:
+    The light should be coloured $1
     if it is, please press enter
     
     In case of any failure, type anything and press enter
 EOT
     read string
-    eval test_${testname}_human=$?
-}
-
-light_test () {
-    colour=$(printf "%03d %03d %03d\n" $1 $2 $3)
-    testname=$4
-    send_coap_colour $colour $testname
-    ask_user_success_status $colour $testname
-    sleep $sleep_period
+    if [ -z ${string} ]
+    then
+        eval ${testname}_test_human="OK"
+    else
+        eval ${testname}_test_human=$string
+        failures=$((${failures} + 1))
+    fi
 }
 
 report () {
-    testname=$1
-    eval exec=test_${testname}_exec
-    eval human=test_${testname}_human
-    cat <<EOT
-test $testname
-  return code: $test_${testname}_exec
-  human evaluation: $test_${testname}_human
+    tests=$@
+    for testname in ${tests}
+    do
+        test_exec=${testname}_test_exec
+        test_human=${testname}_test_human
+        cat <<EOT
+Test ${testname}
+  return code: ${!test_exec}
+  human evaluation: ${!test_human}
 EOT
+    done
+    echo "Total number of failures: ${failures}"
 }
 
-light_test 255 255 255 first
-light_test 255 050 100 second
-light_test 255 000 000 third
-light_test 000 255 000 fourth
-light_test 000 000 255 fifth
+light_test 255 255 255 White
+light_test 255 050 100 Panther
+light_test 255 000 000 Red
+light_test 000 255 000 Green
+light_test 000 000 255 Blue
+light_test 000 000 000 Black
 
-send_coap_colour "255 050 100" puppu
+report White Panther Red Green Blue Black
 
-for i in first second third fourth fifth
-do
-    report $i
-done
+exit ${failures}
