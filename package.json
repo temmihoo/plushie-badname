@@ -25,4 +25,5 @@
     "url": "https://github.com/temmihoo/plushie-badname/issues"
   }
 , "homepage": "https://github.com/temmihoo/plushie-badname#readme"
+, "dependencies": { "coap": "0.12.0" }
 }
