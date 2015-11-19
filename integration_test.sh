@@ -12,7 +12,7 @@ then
     client="false"
 else
     client="node client.js"
-fi    
+fi
 
 failures=0
 
@@ -41,7 +41,7 @@ ask_user_success_status () {
 Test ${testname}:
     The light should be coloured $1
     if it is, please press enter
-    
+
     In case of any failure, type anything and press enter
 EOT
     read string
