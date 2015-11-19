@@ -7,6 +7,13 @@ else
     sleep_period=$1
 fi
 
+if [ -n $DEBUG ]
+then
+    client="false"
+else
+    client="node client.js"
+fi    
+
 failures=0
 
 light_test () {
@@ -19,7 +26,7 @@ light_test () {
 
 send_coap_colour () {
     echo ${colour}
-    echo ${colour} | node client.js
+    echo ${colour} | ${client}
     if [ $? -eq 0 ]
     then
         eval ${testname}_test_exec="OK"
