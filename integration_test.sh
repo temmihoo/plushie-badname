@@ -39,7 +39,7 @@ send_coap_colour () {
 ask_user_success_status () {
     cat <<EOT
 Test ${testname}:
-    The light should be coloured $1
+    The light should be coloured $1 $2 $3
     if it is, please press enter
 
     In case of any failure, type anything and press enter
@@ -79,3 +79,4 @@ light_test 000 000 000 Black
 report White Panther Red Green Blue Black
 
 exit ${failures}
+
