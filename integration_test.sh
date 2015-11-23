@@ -7,7 +7,7 @@ else
     sleep_period=$1
 fi
 
-if [ -n $DEBUG ]
+if [ -n "${DEBUG}" ]
 then
     client="false"
 else
