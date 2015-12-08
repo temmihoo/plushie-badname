@@ -2,7 +2,7 @@
 ** Filename - 'calendar.js'
 ** Author - 'Sayantan Hore'
 ** Created on - '07.12.2015'
-** Description - 'This file holds the calendar events to listen to and fire calls CoAP client with required params'
+** Description - 'This file holds the calendar events to listen to and calls CoAP client with required params'
 */
 
 (function(){
