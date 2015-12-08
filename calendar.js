@@ -1,16 +1,12 @@
+/*
+** Filename - 'calendar.js'
+** Author - 'Sayantan Hore'
+** Created on - '07.12.2015'
+** Description - 'This file holds the calendar events to listen to and fire calls CoAP client with required params'
+*/
+
 (function(){
 	'use strict';
-	
-	function showComponents(locale){
-		console.log("\n");
-		Object.keys(locale).map(function(key){
-			console.log(key + " : " + locale[key]);
-			if (key === "RightNow"){
-				console.log("----------------------------------");
-			}
-		});
-		console.log("-------------------------------------\n");
-	}
 	
 	var checkInterval = 5000;
 	
@@ -31,42 +27,50 @@
 	}
 	
 	function checkIfEventHasOccurred(now, recordedMoment){
-		if (now.second() !== recordedMoment.second()){
-			return false;
-		}
-		else if(now.minute() !== recordedMoment.minute()){
-			return false;
-		}
-		else if(now.hour() !== recordedMoment.hour()){
-			return false;
-		}
-		else if(now.day() !== recordedMoment.day()){
-			return false;
-		}
-		else if(now.month() !== recordedMoment.month()){
-			return false;
-		}
-		else if(now.year() !== recordedMoment.year()){
-			return false;
-		}
-		else{
-			return true;
-		}
+		return now.isSame(recordedMoment, 'second') && now.isSame(recordedMoment, 'minute') && now.isSame(recordedMoment, 'hour') && now.isSame(recordedMoment, 'day') && now.isSame(recordedMoment, 'month') && now.isSame(recordedMoment, 'year');
 	}
 	
 	var now = moment();
-	showComponents(getLocaleData(now));
+	console.log("Waiting ...");
 	
-	var intervals = [10, 15, 20];
+	var events = [];
 	
-	var events = intervals.map(function(value){
-		return now.clone().add(value.toString(), 'seconds'); 
+	events.push({
+		name: 'BLINK_LED',
+		flash: true,
+		startTime: now.clone().add('5', 'seconds'),
+		targetDevice: 'led',
+		msg: 'Led lamp colour changes'
+	});
+	events.push({
+		name: 'GLOW_LED',
+		flash: false,
+		startTime: now.clone().add('10', 'seconds'),
+		duration: 5,
+		targetDevice: 'led',
+		startMsg: 'Led lamp colour changes',
+		endMsg: 'Led lamp colour changes'
+	})
+	events.push({
+		name: 'GLOW_LED',
+		flash: false,
+		startTime: now.clone().add('20', 'seconds'),
+		duration: 5,
+		targetDevice: 'led',
+		startMsg: 'Led lamp colour changes',
+		endMsg: 'Led lamp colour changes'
 	});
 	
 	events.forEach(function(element, index){
 		setInterval(function(){
-			if (checkIfEventHasOccurred(moment(), element)){
-				showComponents(getLocaleData(element));
+			if (checkIfEventHasOccurred(moment(), element.startTime)){
+				console.log("----------------------------------");
+				console.log("Event " + element.name + " started");
+				console.log(JSON.stringify(element, null, 2));
+				setTimeout(function(){
+					console.log("Event " + element.name + " ended");
+					console.log("----------------------------------");
+				}, element.duration * 1000);
 			}
 		}, checkInterval);
 	});
