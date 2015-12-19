@@ -13,7 +13,7 @@
 	
 	describe("Events", function(){
 		var aNewMoment = calendar.createNewMoment();
-		var events = calendar.createEvents(aNewMoment);
+		var events = calendar.loadEvents(aNewMoment);
 		
 		it("Is an array", function(){
 			assert.equal(true, (events.constructor === Array));
