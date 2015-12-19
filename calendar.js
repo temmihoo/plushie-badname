@@ -24,7 +24,7 @@ module.exports.createNewMoment = function(){
 }
 
 /*
-** Creates new hard coded events
+** Load events
 */
 module.exports.loadEvents = function(now){
 	var fs = require('fs');
