@@ -1,9 +1,9 @@
 (function(){
-	var fs = require("fs");
-	var assert = require("assert");
+	var fs = require('fs');
+	var assert = require('assert');
 	
 	describe("JSON Data", function(){
-		var json_data = fs.readFileSync("events.json", "utf8");
+		var json_data = fs.readFileSync('events.json', 'utf8');
 		var isValidJSON = false;
 		
 		it("Is valid JSON", function(){

@@ -26,38 +26,14 @@ module.exports.createNewMoment = function(){
 /*
 ** Creates new hard coded events
 */
-module.exports.createEvents = function(now){
+module.exports.loadEvents = function(now){
+	var fs = require('fs');
 	var events = [];
-
-	events.push({
-		name: 'BLINK_LED',
-		flash: true,
-		startTime: now.clone().add('5', 'seconds'),
-		targetDevice: 'led',
-		msg: 'Led lamp colour changes',
-		triggered: false
-	});
-	events.push({
-		name: 'GLOW_LED',
-		flash: false,
-		startTime: now.clone().add('10', 'seconds'),
-		duration: 5,
-		targetDevice: 'led',
-		startMsg: 'Led lamp colour changes',
-		endMsg: 'Led lamp colour changes',
-		triggered: false
-	})
-	events.push({
-		name: 'GLOW_LED',
-		flash: false,
-		startTime: now.clone().add('20', 'seconds'),
-		duration: 5,
-		targetDevice: 'led',
-		startMsg: 'Led lamp colour changes',
-		endMsg: 'Led lamp colour changes',
-		triggered: false
-	});
-	
+	try {
+		events = JSON.parse(fs.readFileSync('events.json', 'utf8')).events;
+	} catch(e) {
+		console.log(e);
+	}
 	return events;
 }
 
