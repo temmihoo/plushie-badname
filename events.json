@@ -1,0 +1,19 @@
+{
+	"events": [{
+		"type": "BLINK_LED",
+		"flash": true,
+		"startTime": null,
+		"targetDevice": "led",
+		"msg": "Led lamp colour changes",
+		"triggered": false
+	}, {
+		"type": "GLOW_LED",
+		"flash": false,
+		"startTime": null,
+		"duration": 5,
+		"targetDevice": "led",
+		"startmsg": "Led lamp colour changes",
+		"endmsg": "Led lamp colour changes",
+		"triggered": false
+	}]
+}
