@@ -1,7 +1,7 @@
 'use strict';
 
 let gulp = require('gulp');
-//let jshint = require('gulp-jshint');
+let jshint = require('gulp-jshint');
 let mocha = require('gulp-mocha');
 
 
