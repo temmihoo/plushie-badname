@@ -29,6 +29,6 @@ gulp.task('validateJSON', function(){
 });
 
 gulp.task('watch', function() {
-    //gulp.watch(sources.js, ['jshint']);
+    gulp.watch(sources.js, ['jshint']);
     gulp.watch('**/*.json', ['validateJSON'])
 });
