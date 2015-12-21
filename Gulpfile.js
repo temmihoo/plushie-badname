@@ -1,7 +1,8 @@
 'use strict';
 
 let gulp = require('gulp');
-let jshint = require('gulp-jshint');
+//let jshint = require('gulp-jshint');
+let mocha = require('gulp-mocha');
 
 
 let sources = {
@@ -21,6 +22,13 @@ gulp.task ('jshint', function() {
         .pipe(jshint.reporter('jshint-stylish'));
 });
 
+gulp.task('validateJSON', function(){
+     gulp.src('unit_test_events.js', {read: false})
+        .pipe(mocha({reporter: 'spec'}))
+        .on('error', console.log)
+});
+
 gulp.task('watch', function() {
-    gulp.watch(sources.js, ['jshint']);
+    //gulp.watch(sources.js, ['jshint']);
+    gulp.watch('**/*.json', ['validateJSON'])
 });
