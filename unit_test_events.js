@@ -8,7 +8,7 @@
 		
 		// Check for valid JSON
 		it("Is valid JSON", function(){
-			assert.equal(true, (function(json_data){
+			assert.equal(true, (function(){
 				try {
 					var json_obj = JSON.parse(json_data);
 					
@@ -72,7 +72,7 @@
 				} catch(e) {
 					return false;
 				}
-			})(json_data));
+			})());
 		});
 	});
 })();
