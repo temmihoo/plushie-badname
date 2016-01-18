@@ -1,90 +1,55 @@
 (function(){
 	var fs = require('fs');
 	var assert = require('assert');
+	var calendar = require('./Calendar');
 	
-	// Ckecking for valid events in Events array
-	function hasValidEvents(json_obj){
-		var eventsAreValid = json_obj.events.map(function(element){
-			if (element.hasOwnProperty('flash')){
-				if (element.hasOwnProperty('startTime')){
-					if (element.flash === false){
-						if (element.hasOwnProperty('duration')){
-							return true;
-						}
-						else{
-							return false;
-						}
-					}
-					else{
-						return true;
-					}
-				}
-				else{
-					return false;
-				}
-			}
-			else{
-				return false;
-			}
+	var timeout = parseInt(process.argv[process.argv.indexOf('--timeout') + 1]);
+	if (timeout < 10000){
+		console.log("Timeout has to be greater than 10000");
+		process.exit();
+	}
+	
+	var cal = calendar.getCalendar();
+	var events = cal.getEvents(timeout - 2000);
+	
+	
+	
+	// Observe events
+	function observeArray(events){
+		Array.observe(events, function(changes){
+			console.log("Changed");
 		});
-		//console.log(eventsAreValid);
-		assert.equal(-1, eventsAreValid.indexOf(false));
 	}
 	
-	// Checking if Events array is empty
-	function isNotEmptyArray(json_obj){
-		assert.equal(true, (function(){
-			var isNotEmpty = json_obj.events.length > 0;
-			
-			if (isNotEmpty){
-				describe("Events array not empty", function(){
-					it("Has valid events", hasValidEvents.bind(null, json_obj));
-				});
-			}
-			return isNotEmpty;
-		})());	
+	// Check for a non-empty array
+	function isNotEmpty(events){
+		var notEmpty = events.length > 0;
+		assert.equal(true, notEmpty);
 	}
 	
-	// Checking if Events is a valid array
-	function isAnArray(json_obj){
-		assert.equal(true, (function(json_obj){
-			var isArray = json_obj.events instanceof Array;
-			
-			if (isArray){
-				describe("Events Array", function(){
-					
-					// Check for empty array
-					it("Is not empty", isNotEmptyArray.bind(this, json_obj));
-				});
-			}
-			return isArray;
-		})(json_obj));
+	// Check for a valid array
+	function isAnArray(events){
+		var isArray = events instanceof Array;
+		assert.equal(true, isArray);
 	}
 	
-	// Checking if json_data is a valid json object
-	function isValidJSON(json_data){
-		assert.equal(true, (function(){
-			try {
-				var json_obj = JSON.parse(json_data);
-				
-				describe("Events", function(){
-					
-					// Check for array
-					it("Is an array", isAnArray.bind(null, json_obj));
-				});
-				
-				return true;
-			} catch(e) {
-				return false;
-			}
-		})());
-	}
+	describe("Events, after created", function(){
+		it("Is an array", isAnArray.bind(null, events));
+		it("Is not empty", isNotEmpty.bind(null, events));
+	});
 	
-	
-	describe("JSON Data", function(){
-		var json_data = fs.readFileSync('events.json', 'utf8');
+	describe("Events, after monitoring started", function(){
+		//var delayForDone = parseInt(this.timeout()) - 1000;
+		var delayForDone = timeout - 1000;
 		
-		// Check for valid JSON
-		it("Is valid JSON", isValidJSON.bind(null, json_data));
+		before(function(){
+			//observeArray(events);
+			cal.monitorEvents(events);
+		});
+		
+		it("Is empty", function(done){
+			setTimeout(done, delayForDone);
+			assert.equal(true, (events.length > 0));
+		});
 	});
 })();
