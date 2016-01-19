@@ -3,16 +3,10 @@
 	var assert = require('assert');
 	var calendar = require('./Calendar');
 	
-	var timeout = parseInt(process.argv[process.argv.indexOf('--timeout') + 1]);
-	if (timeout < 10000){
-		console.log("Timeout has to be greater than 10000");
-		process.exit();
-	}
+	//var timeout = parseInt(process.argv[process.argv.indexOf('--timeout') + 1]);
 	
 	var cal = calendar.getCalendar();
-	var events = cal.getEvents(timeout - 2000);
-	
-	
+	var events = null;
 	
 	// Observe events
 	function observeArray(events){
@@ -34,13 +28,18 @@
 	}
 	
 	describe("Events, after created", function(){
+		if (this.timeout() < 10000){
+			console.log("Timeout has to be greater than 10000");
+			process.exit();
+		}
+		events = cal.getEvents(this.timeout() - 2000);
 		it("Is an array", isAnArray.bind(null, events));
 		it("Is not empty", isNotEmpty.bind(null, events));
 	});
 	
 	describe("Events, after monitoring started", function(){
 		//var delayForDone = parseInt(this.timeout()) - 1000;
-		var delayForDone = timeout - 1000;
+		var delayForDone = this.timeout() - 1000;
 		
 		before(function(){
 			//observeArray(events);
