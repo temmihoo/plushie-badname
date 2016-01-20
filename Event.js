@@ -29,10 +29,16 @@ module.exports.emitEvents = function(now, maxDelay){
     var event = {
         id: generate_random_string(),
         begin: {
-            time: startTime
+            time: startTime,
+            perform: function(){
+                return " started";
+            }
         },
         end: {
-            time: endTime
+            time: endTime,
+            perform: function(){
+                return " ended";
+            }
         }
     };
     
@@ -46,10 +52,16 @@ module.exports.emitEvents = function(now, maxDelay){
     var event = {
         id: generate_random_string(),
         begin: {
-            time: startTime
+            time: startTime,
+            perform: function(){
+                return " started";
+            }
         },
         end: {
-            time: endTime
+            time: endTime,
+            perform: function(){
+                return " ended";
+            }
         }
     };
     

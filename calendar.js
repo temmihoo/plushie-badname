@@ -38,7 +38,7 @@ module.exports.getCalendar = function(){
     function scanEvents(events){
         events.map(function(event, index){
             if (checkForEqualMoment(moment(), moment(event.begin.time))){
-                console.log("Event " + event.id + " started");
+                console.log("Event " + event.id + event.begin.perform());
                 running_events.push(event);
                 if (running_events.length === 1){
                     var obj = {};
@@ -59,7 +59,7 @@ module.exports.getCalendar = function(){
     function scanRunningEvents(events){
         events.map(function(event, index){
             if (checkForEqualMoment(moment(), moment(event.end.time))){
-                console.log("Event " + event.id + " stopped");
+                console.log("Event " + event.id + event.end.perform());
                 events.splice(index, 1);
             }
         });
