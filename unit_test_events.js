@@ -32,7 +32,7 @@
 			console.log("Timeout has to be greater than 10000");
 			process.exit();
 		}
-		events = cal.getEvents(this.timeout() - 2000);
+		//events = cal.getEvents(this.timeout() - 2000);
 		it("Is an array", isAnArray.bind(null, events));
 		it("Is not empty", isNotEmpty.bind(null, events));
 	});
