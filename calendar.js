@@ -56,15 +56,15 @@ module.exports.getCalendar = function(){
         }
     }
     
-    function scanRunningEvents(events){
-        events.map(function(event, index){
-            if (checkForEqualMoment(moment(), moment(event.end.time))){
-                console.log("Event " + event.id + event.end.perform());
-                events.splice(index, 1);
+    function scanRunningEvents(running_events){
+        running_events.map(function(running_event, index){
+            if (checkForEqualMoment(moment(), moment(running_event.end.time))){
+                console.log("Event " + running_event.id + running_event.end.perform());
+                running_events.splice(index, 1);
             }
         });
-        if (events.length === 0){
-            console.log("All running events stopped, monitoring running events stopped");
+        if (running_events.length === 0){
+            console.log("All running events ended, monitoring running events stopped");
             this.stop();
         }
     }
