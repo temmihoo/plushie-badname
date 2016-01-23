@@ -38,20 +38,20 @@ module.exports.getCalendar = function(){
     function scanEvents(events){
         events.map(function(event, index){
             if (checkForEqualMoment(moment(), moment(event.begin.time))){
-                console.log("Event " + event.id + event.begin.perform());
+                //console.log("Event " + event.id + event.begin.perform());
                 running_events.push(event);
                 if (running_events.length === 1){
                     var obj = {};
                     var task = new PeriodicTask(delay, scanRunningEvents, obj, running_events);
                     obj.stop = task.stop.bind(task);
-                    console.log("Event " + event.id + " started running, monitoring running events started");
+                    //console.log("Event " + event.id + " started running, monitoring running events started");
                     task.run();
                 }
                 events.splice(index, 1);
             }
         });
         if (events.length === 0){
-            console.log("All events started, monitoring events stopped");
+            //console.log("All events started, monitoring events stopped");
             this.stop();
         }
     }
@@ -59,12 +59,12 @@ module.exports.getCalendar = function(){
     function scanRunningEvents(running_events){
         running_events.map(function(running_event, index){
             if (checkForEqualMoment(moment(), moment(running_event.end.time))){
-                console.log("Event " + running_event.id + running_event.end.perform());
+                //console.log("Event " + running_event.id + running_event.end.perform());
                 running_events.splice(index, 1);
             }
         });
         if (running_events.length === 0){
-            console.log("All running events ended, monitoring running events stopped");
+            //console.log("All running events ended, monitoring running events stopped");
             this.stop();
         }
     }
