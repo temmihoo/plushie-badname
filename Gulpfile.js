@@ -22,8 +22,8 @@ gulp.task ('jshint', function() {
         .pipe(jshint.reporter('jshint-stylish'));
 });
 
-gulp.task('validateEvents', function(){
-    return gulp.src('unit_test_events.js', {read: false})
+gulp.task('validateCalendar', function(){
+    return gulp.src('unit_test_calendar.js', {read: false})
         .pipe(mocha({reporter: 'spec', bail: true, timeout: 10000}))
         .on('error', console.log)
 });
