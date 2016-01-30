@@ -17,7 +17,6 @@ module.exports.emitEvents = function(now, maxDelay){
         else{
             startAfter = dflt;
         }
-        
         return startAfter;
     }
     
