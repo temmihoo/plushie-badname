@@ -1,27 +1,13 @@
 (function(){
+    // For Calendar.js
+    
     'use strict';
     
-    var assert = require('assert');
-    var moment = require('moment');
-    var eventsEmitter = require('./Event');
-    var calendar = require('./Calendar');
-    var PeriodicTask = require('periodic-task');
-    
-    
-    // For Event.js
-    describe("Events", function(){
-        var events = eventsEmitter.emitEvents(moment());
-        it("Is an array @just_in_time", function(){
-            assert.equal(true, events instanceof Array);
-        });
-        
-        it("Is not empty @just_in_time", function(){
-            assert.equal(true, (events.length !== 0)); 
-        });
-    });
-    
-    // For Calendar.js
     describe("Calendar", function(){
+        var assert = require('assert');
+        var moment = require('moment');
+        var calendar = require('.././Calendar');
+        var PeriodicTask = require('periodic-task');
         var cal = calendar.getCalendar(true);
         var now = moment();
         var anotherNow = now.clone();

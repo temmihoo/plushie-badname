@@ -4,7 +4,7 @@
   "description": "Helsinki Hacklab workshop goes IoT",
   "main": "server.js",
   "scripts": {
-    "test": "./node_modules/.bin/gulp validateCalendar",
+    "test": "./node_modules/.bin/gulp unit-test",
     "start": "node server.js"
   },
   "repository": {

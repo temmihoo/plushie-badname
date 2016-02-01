@@ -28,6 +28,12 @@ gulp.task('validateCalendar', function(){
         .on('error', console.log)
 });
 
+gulp.task('unit-test', function(){
+    return gulp.src('test/unit-*.js', {read: false})
+        .pipe(mocha({reporter: 'spec', bail: true, timeout: 10000}))
+        .on('error', console.log)
+});
+
 gulp.task('watch', function() {
     gulp.watch(sources.js, ['jshint']);
     //gulp.watch('**/*.json', ['validateEvents'])
