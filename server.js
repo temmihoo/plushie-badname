@@ -9,8 +9,8 @@
     var Util = require('./Util');
     var util = Util.util();
     
-    util.writeFile("./temp/pid.txt", process.pid);
+    util.writeFile("./temp/pid.txt", process.pid, 'utf8');
     
-    var CoapServer = require('./CoapServer');
-    CoapServer.serv();
+    //var CoapServer = require('./CoapServer');
+    //CoapServer.serv();
 })();
