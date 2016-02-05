@@ -19,6 +19,9 @@ module.exports.util = function(){
                     fs.writeFileSync(path, contents);
                 }
             });
+        },
+        removeFile: function(fileNameWithFullPath){
+            fs.unlinkSync(fileNameWithFullPath);
         }
     }
     
