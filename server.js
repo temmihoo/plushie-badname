@@ -8,9 +8,16 @@
 	
     var Util = require('./Util');
     var util = Util.util();
+    var fs = require('fs');
     
-    util.writeFile("./temp/pid.txt", process.pid, 'utf8');
+    process.on('SIGINT', function(){
+        console.log("SIGINT received, process " + process.pid + " terminating ...\n");
+        fs.unlinkSync("./temp/pid.txt");
+        process.exit(0);
+    });
     
-    //var CoapServer = require('./CoapServer');
-    //CoapServer.serv();
+    fs.writeFileSync("./temp/pid.txt", process.pid, 'utf8');
+    
+    var CoapServer = require('./CoapServer');
+    CoapServer.serv();
 })();
