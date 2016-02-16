@@ -24,6 +24,6 @@ var pubsub = require('./PubSub');
     
     fs.writeFileSync("./temp/pid.txt", process.pid, 'utf8');
     
-    CoapServer.serv();
+    //CoapServer.serv();
     cal.start(ps);
 })();
