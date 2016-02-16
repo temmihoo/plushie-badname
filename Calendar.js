@@ -32,9 +32,12 @@ module.exports.getCalendar = function(__DEBUG__){
         return isEqualMoment;
     };
     
-    function createPeriodicTask(callback, args){
+    function createPeriodicTask(callback, args, taskDelay){
         var obj = {};
-        var task = new PeriodicTask(delay, callback, obj, args);
+        if (typeof taskDelay === 'undefined'){
+            taskDelay = delay;
+        }
+        var task = new PeriodicTask(taskDelay, callback, obj, args);
         obj.stop = task.stop.bind(task);
         return task;
     };
@@ -50,6 +53,9 @@ module.exports.getCalendar = function(__DEBUG__){
         var events = args[0];
         events.map(function(event, index){
             if (checkForEqualMoment(moment(), moment(event.end.time))){
+                if (!__DEBUG__){
+                    event.end.perform();
+                }
                 events.splice(index, 1);
             }
         });
@@ -65,10 +71,13 @@ module.exports.getCalendar = function(__DEBUG__){
         
         events.map(function(event, index){
             if (checkForEqualMoment(moment(), moment(event.begin.time))){
-                events.splice(index, 1);
                 running_events.push(event);
+                if (!__DEBUG__){
+                    event.begin.perform();
+                }
+                events.splice(index, 1);
                 if ((__FLAG__Running === true) && (running_events.length === 1)){
-                    var task = createPeriodicTask(scanRunningEvents, [running_events]);
+                    var task = createPeriodicTask(scanRunningEvents, [running_events], delay);
                     task.run();
                 }
             }
@@ -80,7 +89,7 @@ module.exports.getCalendar = function(__DEBUG__){
     
     function monitorEvents(events){
         var running_events = [];
-        var task = createPeriodicTask(scanEvents, [events, running_events, true]);
+        var task = createPeriodicTask(scanEvents, [events, running_events, true], delay);
         task.run();
     };
     
@@ -101,7 +110,9 @@ module.exports.getCalendar = function(__DEBUG__){
     
     function start(pubsub){
         eventsToken = subscribeEvents(pubsub);
-        periodicEventGenerator = createPeriodicTask(publishEvents, [pubsub]);
+        var delay = 10000;
+        periodicEventGenerator = createPeriodicTask(publishEvents, [pubsub], delay);
+        periodicEventGenerator.run();
     };
     
     var rtrn_obj = null;
