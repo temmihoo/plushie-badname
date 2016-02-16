@@ -13,7 +13,8 @@ module.exports.getCalendar = function(__DEBUG__){
     
     // Delay should be less than a second, because our events are separated by minimum a second
     var delay = 100;
-    // var running_events = [];
+    var eventsToken = null;
+    var periodicEventGenerator = null;
     
     /*
     ** Checks if a scheduled event has occured by comparing the moment of the event with a new moment created just now
@@ -29,20 +30,21 @@ module.exports.getCalendar = function(__DEBUG__){
                 && now.isSame(recordedMoment, 'year');
         
         return isEqualMoment;
-    }
+    };
     
     function createPeriodicTask(callback, args){
         var obj = {};
         var task = new PeriodicTask(delay, callback, obj, args);
         obj.stop = task.stop.bind(task);
         return task;
-    }
+    };
     
 	function getEvents(maxDelay){
+        var maxDelay = maxDelay || 8000;
         var event = require('./Event');
         var events = event.emitEvents(moment(), (parseInt(maxDelay) / 1000));
         return events;
-    }
+    };
     
     function scanRunningEvents(args){
         var events = args[0];
@@ -54,7 +56,7 @@ module.exports.getCalendar = function(__DEBUG__){
         if (events.length === 0){
             this.stop();
         }
-    }
+    };
     
     function scanEvents(args){
         var events = args[0];
@@ -74,13 +76,33 @@ module.exports.getCalendar = function(__DEBUG__){
         if (events.length === 0){
             this.stop();
         }
-    }
+    };
     
     function monitorEvents(events){
         var running_events = [];
         var task = createPeriodicTask(scanEvents, [events, running_events, true]);
         task.run();
-    }
+    };
+    
+    function publishEvents(args){
+        var pubsub = args[0];
+        var events = getEvents();
+        pubsub.publish("generateEvents", events);
+    };
+    
+    function subscribeEvents(pubsub){
+        return pubsub.subscribe("generateEvents", monitorEvents);
+    };
+    
+    function stop(pubsub){
+        periodicEventGenerator.stop();
+        pubsub.unsubscribe(eventsToken);  
+    };
+    
+    function start(pubsub){
+        eventsToken = subscribeEvents(pubsub);
+        periodicEventGenerator = createPeriodicTask(publishEvents, [pubsub]);
+    };
     
     var rtrn_obj = null;
     
@@ -96,6 +118,8 @@ module.exports.getCalendar = function(__DEBUG__){
     }
     else{
         rtrn_obj = {
+            start: start,
+            stop: stop,
             getEvents: getEvents,
             monitorEvents: monitorEvents
         }
