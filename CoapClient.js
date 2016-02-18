@@ -18,10 +18,10 @@ module.exports.command = function(){
 	//Getting RGB value from user here using this string format= "nnn nnn nnn" nnn=000->255 
   	var util = require('util');
 	process.stdin.on('data', function (text) {	
-    var dataRGB=formatString(text);
-    console.log(dataRGB);
-    var request = Coap.createRequest(params,dataRGB);
-	request.send();
+		var dataRGB=formatString(text);
+		console.log(dataRGB);
+		var request = Coap.createRequest(params,dataRGB);
+		request.send();
   	});
 
   	function formatString(str) {

@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "./node_modules/.bin/gulp unit-test",
-    "start": "node server.js"
+    "start": "node server.js",
+    "stop": "node terminate.js"
   },
   "repository": {
     "type": "git",
