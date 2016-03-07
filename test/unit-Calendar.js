@@ -12,6 +12,8 @@
         var now = moment();
         var anotherNow = now.clone();
         
+        var delay = 100;
+        
         describe("Two same moments @just_in_time", function(){
             it("Are equal", function(){
                 assert.equal(true, cal.checkForEqualMoment(now, anotherNow)); 
@@ -31,7 +33,7 @@
         });
         
         describe("Task", function(){
-            var task = cal.createPeriodicTask(cal.scanEvents, []);
+            var task = cal.createPeriodicTask(cal.scanEvents, [], delay);
             
             it("Is valid @just_in_time", function(){
                 assert.equal(true, (task instanceof PeriodicTask));
@@ -43,7 +45,7 @@
             
             before(function(done){
                 events = cal.getEvents(this.timeout() - 2000);
-                var task = cal.createPeriodicTask(cal.scanRunningEvents, [events]);
+                var task = cal.createPeriodicTask(cal.scanRunningEvents, [events], delay);
                 task.run();
                 setTimeout(done, this.timeout() - 1000);
             });
@@ -59,7 +61,7 @@
             before(function(done){
                 events = cal.getEvents(this.timeout() - 2000);
                 running_events = [];
-                var task = cal.createPeriodicTask(cal.scanEvents, [events, running_events, false]);
+                var task = cal.createPeriodicTask(cal.scanEvents, [events, running_events, false], delay);
                 task.run();
                 setTimeout(done, this.timeout() - 1000);
             });
@@ -79,7 +81,7 @@
             before(function(done){
                 events = cal.getEvents(this.timeout() - 2000);
                 running_events = [];
-                var task = cal.createPeriodicTask(cal.scanEvents, [events, running_events, true]);
+                var task = cal.createPeriodicTask(cal.scanEvents, [events, running_events, true], delay);
                 task.run();
                 setTimeout(done, this.timeout() - 1000);
             });
